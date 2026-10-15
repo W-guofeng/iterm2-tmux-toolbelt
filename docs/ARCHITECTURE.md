@@ -1,0 +1,19 @@
+# Architecture
+
+`tmux_toolbelt.py` uses the official SDK, a per-user process lock, a Toolbelt WebView and an authenticated loopback HTTP service. Stopping the plugin releases its own resources; it does not kill tmux sessions.
+
+`adapter.py` refreshes the foreground window/tab/active pane. Existing `tmux -CC` connections are matched by their exact connection/owning session. Otherwise `process.py` verifies a unique foreground macOS system OpenSSH PID, TTY, start time and argv. It stops reading argv at argc and does not parse environment bytes. Only the known native iTerm2 SSH Profile wrapper envelope/digest is recognized; arbitrary remote commands are refused.
+
+`ssh.py` keeps a noninteractive query channel, reusing an available configured master or its own private temporary master. Strict host verification, BatchMode, bounded requests, no forwarding and no LocalCommand are enforced. `remote.sh` handles nonce-framed fixed operations with quoted fields. It installs no query daemon. Host/socket/server PID/client/session ID/creation time guard every target; post-switch checks require the exact client to select the requested session. Mutations never retry.
+
+First attachment uses `terminal.py`, `bridge.py` and the explicitly installed `zsh_attach.zsh`. Two short SDK transactions verify focus, remote host/user, empty EDITING prompt and helper UID/PID/real TTY/nonce. Parameters go through the separate query channel into a private one-shot file. The original pane receives only a private ZLE key, with broadcast suppressed. The helper validates the request and opens the real terminal read/write before tmux attaches. Existing-client switches and detach stay on the independent channel. No remote network operation runs inside an SDK transaction.
+
+`core.py` validates browser context, names, exact IDs and creation times, and rechecks focus before a mutation. Direct deletion can first switch only the bound client to a fallback session. Return SSH refuses known destructive `destroy-unattached` policy. Cross-process focus and remote state cannot form one atomic transaction, and first server creation retains a small concurrency window; operations never reroute to another host.
+
+`setup.py`/`setup.sh` run only after an explicit context-bound button action. They verify target/ownership, pinned official script checksums, file types and syntax; stage backups; refuse unknown customized files; and restore their own changes on handled failure. Only an exact known old helper is eligible for automatic repair. Startup changes activate in a new connection, without sourcing busy shells.
+
+`http.py` exposes a fixed asset allowlist and authenticated endpoints on random `127.0.0.1` ports. Actions require exact same-origin JSON and a random memory token. It rejects cross-site/null Origin, unexpected Host, duplicate headers, oversized inputs and excessive concurrency. `state.py` shares bounded state work; health is independent of SSH. API recovery is limited and does not replay actions. Logs contain event metadata, not command contents or target names.
+
+`web/` has no external resources or HTML insertion. `i18n.js` selects Simplified Chinese for a Chinese preferred WebView language, English otherwise. Presentation strings and composed server messages are localized; host names, user input, IDs, contexts and action payloads are preserved. Semantic colors follow SDK effectiveTheme; native translucency requires host support.
+
+`dist/tmux_toolbelt.py` deterministically bundles project source/assets and license notices, excluding SDK/site-packages and official integration scripts. The installer previews changes and refuses unknown scripts. It does not enable API access, AutoLaunch or execute the plugin by default. Screenshot/test adapters are isolated from the installed production instance.

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>tmux Sessions</title><link rel="stylesheet" href="/style.css"><script src="/i18n.js" defer></script><script src="/app.js" defer></script></head>
+<body>
+<div class="summary" aria-label="连接状态" data-i18n-aria-label="连接状态"><span id="status" class="status" data-i18n="连接中">连接中</span><strong id="host" data-i18n="正在确认目标…">正在确认目标…</strong><button id="refresh" class="small" title="刷新连接和会话" data-i18n-title="刷新连接和会话" aria-label="刷新会话列表" data-i18n-aria-label="刷新会话列表" data-i18n="刷新">刷新</button></div>
+<div class="scope"><span id="pane"></span><details><summary data-i18n="连接详情">连接详情</summary><dl id="details"></dl><div id="socket-control" hidden><label for="socket-choice" data-i18n="目标 Socket">目标 Socket</label><select id="socket-choice"></select><label for="socket-path" data-i18n="自定义绝对路径">自定义绝对路径</label><input id="socket-path" autocomplete="off" spellcheck="false" maxlength="4096"><button id="socket-set" class="small" data-i18n="选择 Socket">选择 Socket</button></div></details></div>
+<p id="notice" role="status"></p><p id="error" role="alert" hidden></p>
+<section id="setup" hidden><p id="setup-message"></p><button id="setup-install" class="small" hidden data-i18n="一键配置远端集成">一键配置远端集成</button></section><p id="feedback" role="status"></p>
+<div class="toolbar"><button id="detach" class="small" disabled title="分离当前客户端，保留所有任务" data-i18n-title="分离当前客户端，保留所有任务" data-i18n="回到 SSH">回到 SSH</button><button id="create" class="small" disabled data-i18n="＋ 新建">＋ 新建</button></div>
+<div id="list" role="list" aria-label="tmux sessions"></div><p id="empty" class="empty" data-i18n="正在读取…">正在读取…</p>
+<section id="form" class="form" role="dialog" aria-modal="false" aria-labelledby="form-title" hidden>
+<h2 id="form-title"></h2><p id="form-description"></p><label id="field-label" for="field"></label><input id="field" autocomplete="off" spellcheck="false" maxlength="64"><p id="hint"></p><div class="form-actions"><button id="cancel" data-i18n="取消">取消</button><button id="submit"></button></div>
+</section>
+</body></html>
